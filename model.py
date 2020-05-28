@@ -10,6 +10,7 @@ from keras import backend as K
 from fonk import compose, MyConv2D, MytConv2D_BN_Leaky
 import numpy as np 
 import tensorflow as tf
+from keras.models import Model
 
 
 
@@ -38,7 +39,7 @@ def network(inputs,anchor_num,clas_num):
               MytConv2D_BN_Leaky(512,(3,3)))(x4)
     
   up1=UpSampling2D(2)(x5)
-  down1=MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same')(x3)
+  down1=compose(MytConv2D_BN_Leaky(512,(1,1)),MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'))(x3)
   zizom1=Add()([x4, up1,down1]) 
 
   y1=compose(MyConv2D(anchor_num*(clas_num+5),(1,1)) )(zizom1)
@@ -66,7 +67,7 @@ def network(inputs,anchor_num,clas_num):
     
   y4=compose(MyConv2D(anchor_num*(clas_num+5),(1,1)) )(x7)
 
-  return (inputs, [y1,y2,y3,y4] )
+  return Model(inputs, [y1,y2,y3,y4] )
 
 
 
