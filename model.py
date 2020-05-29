@@ -67,7 +67,7 @@ def network(inputs,anchor_num,clas_num):
     
   y4=compose(MyConv2D(anchor_num*(clas_num+5),(1,1)) )(x7)
 
-  return Model(inputs, [y1,y2,y3,y4] )
+  return Model(inputs, [y4,y3,y2,y1] )
 
 
 
